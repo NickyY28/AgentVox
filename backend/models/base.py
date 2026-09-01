@@ -6,26 +6,21 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, declared_attr, mapped_column
 
 class Base(DeclarativeBase):
     """Base class for all SQLAlchemy models."""
-
     pass
 
 
 class TimestampMixin:
     """Adds creation and update timestamps to a model."""
 
-    @declared_attr
-    def created_at(cls) -> Mapped[datetime]:
-        return mapped_column(
-            DateTime(timezone=True),
-            server_default=func.now(),
-            nullable=False,
-        )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        nullable=False,
+    )
 
-    @declared_attr
-    def updated_at(cls) -> Mapped[datetime]:
-        return mapped_column(
-            DateTime(timezone=True),
-            server_default=func.now(),
-            onupdate=func.now(),
-            nullable=False,
-        )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now(),
+        nullable=False,
+    )

@@ -2,23 +2,23 @@ import uvicorn
 from fastapi import FastAPI
 from core.config import settings
 from core.constants import HEALTH_PATH
+from core.database import Base, engine
 
-# from api import api_router
+from api import api_router
 
 
 def create_app() -> FastAPI:
     """Create and configure the FastAPI application."""
     app = FastAPI(
         title=settings.app_name,
-        description=(
-            "AgentVox backend API — auth, CRUD, agents, LangGraph workflows, "
-            "and realtime websockets."
-        ),
+        description=("AgentVox backend API"),
         version="0.1.0",
         debug=settings.debug,
     )
 
-    # app.include_router(api_router, prefix=settings.api_v1_prefix)
+    Base.metadata.create_all(bind=engine)
+
+    app.include_router(api_router, prefix=settings.api_v1_prefix)
 
     @app.get(HEALTH_PATH, tags=["health"])
     async def health_check() -> dict[str, str]:

@@ -35,7 +35,7 @@ class Settings(BaseSettings):
     )
 
     # Database
-    database_url: str = "postgresql+psycopg://postgres:postgres@localhost:5432/agentvox"
+    DATABASE_URL: str = "postgresql+psycopg://postgres:root@localhost:5432/agentvox"
 
     # Security
     secret_key: str = "change-me-to-a-long-random-secret"
