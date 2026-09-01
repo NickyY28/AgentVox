@@ -19,17 +19,17 @@ class Settings(BaseSettings):
     )
 
     # Application
-    app_name: str = "AgentVox"
-    app_env: str = "development"
-    debug: bool = True
-    api_v1_prefix: str = "/api/v1"
+    APP_NAME: str = "AgentVox"
+    APP_ENV: str = "development"
+    DEBUG: bool = True
+    API_V1_PREFIX: str = "/api/v1"
 
     # Server
-    host: str = "0.0.0.0"
-    port: int = 8000
+    HOST: str = "0.0.0.0"
+    PORT: int = 8000
 
     # CORS
-    cors_origins: list[str] = Field(
+    CORS_ORIGINS: list[str] = Field(
         default_factory=lambda: [
             "http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:8000"]
     )
@@ -38,10 +38,10 @@ class Settings(BaseSettings):
     DATABASE_URL: str = "postgresql+psycopg://postgres:root@localhost:5432/agentvox"
 
     # Security
-    secret_key: str = "change-me-to-a-long-random-secret"
-    access_token_expire_minutes: int = 30
-    refresh_token_expire_days: int = 7
-    algorithm: str = "HS256"
+    SECRET_KEY: str = "change-me-to-a-long-random-secret"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    REFRESH_TOKEN_EXPIRE_DAYS: int = 7
+    ALGORITHM: str = "HS256"
 
     # cookies
     COOKIE_DOMAIN: str | None = None
@@ -51,9 +51,9 @@ class Settings(BaseSettings):
     COOKIE_EXP: int = 30  # in minutes
 
     # Paths / logging
-    upload_dir: str = "uploads"
-    log_dir: str = "logs"
-    log_level: str = "INFO"
+    UPLOAD_DIR: str = "uploads"
+    LOG_DIR: str = "logs"
+    LOG_LEVEL: str = "INFO"
 
     # Future OpenAI / LLM integration (disabled by default)
     llm_enabled: bool = False
@@ -68,7 +68,7 @@ class Settings(BaseSettings):
     redis_enabled: bool = False
     redis_url: str = "redis://localhost:6379/0"
 
-    @field_validator("cors_origins", mode="before")
+    @field_validator("CORS_ORIGINS", mode="before")
     @classmethod
     def parse_cors_origins(cls, value: object) -> object:
         if isinstance(value, str):
