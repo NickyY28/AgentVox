@@ -1,7 +1,9 @@
 """Authentication API routes."""
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Response
 from sqlalchemy.orm import Session
+
+from utils.cookies import set_cookie, clear_cookie
 
 from api.auth.auth_dependencies import get_current_user
 from api.auth.auth_schemas import (
@@ -9,6 +11,7 @@ from api.auth.auth_schemas import (
     SignupRequest,
     TokenResponse,
     UserResponse,
+
 )
 from api.auth.auth_service import (
     authenticate_user,
@@ -18,6 +21,7 @@ from api.auth.auth_service import (
 from core.database import get_db
 from core.security import create_access_token
 from models.user import User
+from core.config import settings
 
 router = APIRouter(
     prefix="/auth",
@@ -54,10 +58,12 @@ def signup(
 
 @router.post(
     "/login",
+
     response_model=TokenResponse,
 )
 def login(
     data: LoginRequest,
+    response: Response,
     db: Session = Depends(get_db),
 ) -> TokenResponse:
     """Authenticate a user and return an access token."""
@@ -79,6 +85,13 @@ def login(
         subject=str(user.id),
     )
 
+    set_cookie(
+        response=response,
+        key="access_token",
+        value=access_token,
+
+    )
+
     return TokenResponse(
         access_token=access_token,
     )
@@ -94,3 +107,16 @@ def get_me(
     """Return the currently authenticated user."""
 
     return current_user
+
+
+@router.post(
+    "/logout",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+def logout(response: Response) -> None:
+    """Log out the current user by clearing the access token cookie."""
+
+    clear_cookie(
+        response=response,
+        key="access_token",
+    )
