@@ -30,12 +30,11 @@ class Settings(BaseSettings):
 
     # CORS
     CORS_ORIGINS: list[str] = Field(
-        default_factory=lambda: [
-            "http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:8000"]
+        default_factory=lambda: ["http://localhost:3000","http://127.0.0.1:3000","http://localhost:8000"]
     )
 
     # Database
-    DATABASE_URL: str = "postgresql+psycopg://postgres:root@localhost:5432/agentvox"
+    DATABASE_URL: str
 
     # Security
     SECRET_KEY: str = "change-me-to-a-long-random-secret"
