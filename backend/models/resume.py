@@ -1,9 +1,9 @@
 """Resume database model."""
 
+from core.database import Base
 from sqlalchemy import ForeignKey, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from core.database import Base
 from models.base import TimestampMixin
 
 

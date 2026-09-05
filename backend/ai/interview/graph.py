@@ -14,9 +14,7 @@ from ai.interview.state import InterviewState
 from langgraph.graph import END, START, StateGraph
 
 
-def route_after_decision(
-    state: InterviewState,
-) -> str:
+def route_after_decision(state: InterviewState) -> str:
     """Route the workflow after response evaluation."""
 
     action = state.get(
@@ -105,6 +103,10 @@ def build_interview_graph():
     workflow.add_edge(
         "select_competency",
         "generate_question",
+    )
+    workflow.add_edge(
+        "generate_question",
+        "analyze_response",
     )
 
     # -------------------------

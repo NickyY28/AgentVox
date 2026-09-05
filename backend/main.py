@@ -1,10 +1,9 @@
 import uvicorn
-from fastapi import FastAPI
+from api import api_router
 from core.config import settings
 from core.constants import HEALTH_PATH
 from core.database import Base, engine
-
-from api import api_router
+from fastapi import FastAPI
 
 
 def create_app() -> FastAPI:

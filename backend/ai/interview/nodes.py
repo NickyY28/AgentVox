@@ -95,47 +95,46 @@ def generate_question(state: InterviewState) -> InterviewState:
 
     if follow_up_context:
         question_instruction = f"""
-        This is a targeted follow-up.
+            This is a targeted follow-up.
 
-        The previous response requires more evidence.
+            The previous response requires more evidence.
 
-        Reason:
-        {follow_up_context}
+            Reason:
+            {follow_up_context}
 
-        Ask ONE focused follow-up question.
-        Do not repeat the previous question.
-    """
+            Ask ONE focused follow-up question.
+            Do not repeat the previous question.
+        """
     else:
         question_instruction = """
-        Ask ONE strong question for the competency.
-
-        Prefer a practical, experience-based question.
+            Ask ONE strong question for the competency.
+            Prefer a practical, experience-based question.
         """
 
         prompt = f"""
-        You are conducting a professional technical interview.
+            You are conducting a professional technical interview.
 
-        Current competency:
-        {competency}
+            Current competency:
+            {competency}
 
-        Candidate resume:
-        {resume_context}
+            Candidate resume:
+            {resume_context}
 
-        Target job:
-        {job_context}
+            Target job:
+            {job_context}
 
-        Conversation history:
-        {history}
+            Conversation history:
+            {history}
 
-        {question_instruction}
+            {question_instruction}
 
-        Rules:
-        - Ask exactly one question.
-        - Do not provide an answer.
-        - Do not ask multiple questions.
-        - Keep it conversational.
-        - Do not evaluate the candidate in the question.
-    """
+            Rules:
+            - Ask exactly one question.
+            - Do not provide an answer.
+            - Do not ask multiple questions.
+            - Keep it conversational.
+            - Do not evaluate the candidate in the question.
+        """
 
     response = get_llm().invoke(prompt)
     question = response.content.strip()
@@ -157,22 +156,14 @@ def generate_question(state: InterviewState) -> InterviewState:
 def analyze_response(state: InterviewState) -> InterviewState:
     """Analyze the candidate's answer."""
 
-    answer = state.get(
-        "candidate_answer",
-    )
+    answer = state.get("candidate_answer")
 
     if not answer or not answer.strip():
-        raise ValueError(
-            "Candidate answer cannot be empty."
-        )
+        raise ValueError("Candidate answer cannot be empty.")
 
-    competency = state.get(
-        "current_competency",
-    )
+    competency = state.get("current_competency")
 
-    question = state.get(
-        "current_question",
-    )
+    question = state.get("current_question")
 
     prompt = f"""
         You are an expert technical interviewer.
@@ -210,9 +201,7 @@ def analyze_response(state: InterviewState) -> InterviewState:
           filler words, or body language.
     """
 
-    llm = get_llm().with_structured_output(
-        ResponseAnalysis,
-    )
+    llm = get_llm().with_structured_output(ResponseAnalysis)
 
     analysis = llm.invoke(prompt)
 
