@@ -39,13 +39,6 @@ class JobContext(Base, TimestampMixin):
     )
 
     # Relationship back to User
-    user = relationship(
-        "User",
-        back_populates="job_contexts",
-    )
-
+    user = relationship("User", back_populates="job_contexts")
     competencies = relationship(
-        "Competency",
-        back_populates="job_context",
-        cascade="all, delete-orphan",
-    )
+        "Competency", back_populates="job_context", cascade="all, delete-orphan")

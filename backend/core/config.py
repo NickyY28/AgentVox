@@ -30,7 +30,8 @@ class Settings(BaseSettings):
 
     # CORS
     CORS_ORIGINS: list[str] = Field(
-        default_factory=lambda: ["http://localhost:3000","http://127.0.0.1:3000","http://localhost:8000"]
+        default_factory=lambda: ["http://localhost:3000",
+                                 "http://127.0.0.1:3000", "http://localhost:8000"]
     )
 
     # Database
@@ -55,9 +56,10 @@ class Settings(BaseSettings):
     LOG_LEVEL: str = "INFO"
 
     # Future OpenAI / LLM integration (disabled by default)
-    llm_enabled: bool = False
-    openai_model: str = "gpt-4o-mini"
-    openai_api_key: str | None = None
+    LLM_ENABLED: bool = False
+    LLM_MODEL: str = "gpt-4o-mini"
+    LLM_API_KEY: str | None = None
+    LLM_BASE_URL: str | None = None
 
     # WebSocket realtime
     ws_heartbeat_interval_seconds: int = 30
