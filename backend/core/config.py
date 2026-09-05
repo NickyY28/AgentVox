@@ -30,8 +30,8 @@ class Settings(BaseSettings):
 
     # CORS
     CORS_ORIGINS: list[str] = Field(
-        default_factory=lambda: ["http://localhost:3000",
-                                 "http://127.0.0.1:3000", "http://localhost:8000"]
+        default_factory=lambda: [
+            "http://localhost:3000", "http://localhost:8000"]
     )
 
     # Database
@@ -55,19 +55,24 @@ class Settings(BaseSettings):
     LOG_DIR: str = "logs"
     LOG_LEVEL: str = "INFO"
 
-    # Future OpenAI / LLM integration (disabled by default)
+    # LLM
     LLM_ENABLED: bool = False
     LLM_MODEL: str = "gpt-4o-mini"
     LLM_API_KEY: str | None = None
     LLM_BASE_URL: str | None = None
 
-    # WebSocket realtime
-    ws_heartbeat_interval_seconds: int = 30
-    ws_heartbeat_timeout_seconds: int = 90
+    # Embeddings
+    EMBEDDING_ENABLED: bool = False
+    EMBEDDING_MODEL: str = "text-embedding-3-small"
+    EMBEDDING_API_KEY: str | None = None
+    EMBEDDING_BASE_URL: str | None = None
+    EMBEDDING_DIMENSIONS: int = 1536
 
-    # Future Redis
-    redis_enabled: bool = False
-    redis_url: str = "redis://localhost:6379/0"
+    # RAG
+    RAG_ENABLED: bool = False
+    RAG_TOP_K: int = 5
+    RAG_CHUNK_SIZE: int = 1000
+    RAG_CHUNK_OVERLAP: int = 200
 
     @field_validator("CORS_ORIGINS", mode="before")
     @classmethod
