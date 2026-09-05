@@ -345,3 +345,37 @@ def complete_interview(state: InterviewState) -> InterviewState:
     state["current_question"] = None
 
     return state
+
+
+async def retrieve_relevant_context(state: dict) -> dict:
+    """Retrieve resume/JD context relevant to current question."""
+
+    from ai.rag.service import RAGService
+
+    # db should be injected through runtime/config
+    db = state.get("_db")
+
+    if db is None:
+        return {
+            "retrieved_context": ""
+        }
+
+    rag = RAGService(db)
+
+    question = state.get(
+        "current_question",
+        "",
+    )
+
+    context = await rag.retrieve_context(
+        query=question,
+        limit=5,
+        resume_id=state.get("resume_id"),
+        job_context_id=state.get(
+            "job_context_id"
+        ),
+    )
+
+    return {
+        "retrieved_context": context
+    }

@@ -1,5 +1,7 @@
 """Pydantic schemas for interview intelligence."""
 
+from __future__ import annotations
+
 from typing import Literal
 
 from pydantic import BaseModel, Field
@@ -26,3 +28,38 @@ class NextAction(BaseModel):
     """Decision produced by the adaptive interviewer."""
     action: Literal["follow_up", "next_competency", "complete"]
     reason: str
+
+
+class InterviewStartRequest(BaseModel):
+    """Start an adaptive interview."""
+
+    resume_id: int | None = None
+    job_context_id: int | None = None
+
+
+class InterviewAnswerRequest(BaseModel):
+    """Submit a candidate answer."""
+
+    answer: str = Field(
+        min_length=1,
+        max_length=10000,
+    )
+
+
+class InterviewTurnResponse(BaseModel):
+    """Response returned after an interview turn."""
+
+    question: str | None = None
+    action: str
+
+    claims: list[str] = Field(
+        default_factory=list
+    )
+
+    evidence: list[str] = Field(
+        default_factory=list
+    )
+
+    confidence: float = 0.0
+
+    completed: bool = False
