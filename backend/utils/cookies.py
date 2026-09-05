@@ -1,8 +1,7 @@
 """Cookie utilities."""
 
-from fastapi import Response
-
 from core.config import settings
+from fastapi import Response
 
 
 def set_cookie(

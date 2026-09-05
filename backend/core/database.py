@@ -1,28 +1,20 @@
 from collections.abc import Generator
 
+from core.config import settings
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
-from core.config import settings
 
 
 class Base(DeclarativeBase):
     """Base class for all SQLAlchemy models."""
+    pass  # noqa
 
-    pass
 
-
-engine = create_engine(
-    settings.DATABASE_URL,
-    pool_pre_ping=True,
-)
+engine = create_engine(settings.DATABASE_URL, pool_pre_ping=True)
 
 
 SessionLocal = sessionmaker(
-    bind=engine,
-    class_=Session,
-    autocommit=False,
-    autoflush=False,
-)
+    bind=engine, class_=Session, autocommit=False, autoflush=False)
 
 
 def get_db() -> Generator[Session, None, None]:

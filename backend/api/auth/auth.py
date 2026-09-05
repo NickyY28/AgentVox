@@ -1,9 +1,11 @@
 """Authentication API routes."""
 
-from fastapi import APIRouter, Depends, HTTPException, status, Response
+from core.database import get_db
+from core.security import create_access_token
+from fastapi import APIRouter, Depends, HTTPException, Response, status
+from models.user import User
 from sqlalchemy.orm import Session
-
-from utils.cookies import set_cookie, clear_cookie
+from utils.cookies import clear_cookie, set_cookie
 
 from api.auth.auth_dependencies import get_current_user
 from api.auth.auth_schemas import (
@@ -11,25 +13,17 @@ from api.auth.auth_schemas import (
     SignupRequest,
     TokenResponse,
     UserResponse,
-
 )
 from api.auth.auth_service import (
     authenticate_user,
     create_user,
     get_user_by_email,
 )
-from core.database import get_db
-from core.security import create_access_token
-from models.user import User
-from core.config import settings
 
-router = APIRouter(
-    prefix="/auth",
-    tags=["Authentication"],
-)
+auth = APIRouter(prefix="/auth", tags=["Authentication"])
 
 
-@router.post(
+@auth.post(
     "/signup",
     response_model=UserResponse,
     status_code=status.HTTP_201_CREATED,
@@ -56,7 +50,7 @@ def signup(
     )
 
 
-@router.post(
+@auth.post(
     "/login",
 
     response_model=TokenResponse,
@@ -97,7 +91,7 @@ def login(
     )
 
 
-@router.get(
+@auth.get(
     "/me",
     response_model=UserResponse,
 )
@@ -109,7 +103,7 @@ def get_me(
     return current_user
 
 
-@router.post(
+@auth.post(
     "/logout",
     status_code=status.HTTP_204_NO_CONTENT,
 )
