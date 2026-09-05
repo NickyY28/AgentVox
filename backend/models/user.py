@@ -1,9 +1,8 @@
-from datetime import datetime
 
+from core.database import Base
 from sqlalchemy import Boolean, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from core.database import Base
 from models.base import TimestampMixin
 
 
@@ -38,4 +37,7 @@ class User(Base, TimestampMixin):
         nullable=False,
     )
 
-    resumes = relationship("Resume", back_populates="user", cascade="all, delete-orphan")
+    resumes = relationship(
+        "Resume", back_populates="user", cascade="all, delete-orphan")
+    job_contexts = relationship(
+        "JobContext", back_populates="user", cascade="all, delete-orphan")
