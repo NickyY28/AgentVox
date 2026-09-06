@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
-from ai.interview.graph import interview_graph
+from ai.interview.graph import (
+    interview_answer_graph,
+    interview_start_graph,
+)
 from sqlalchemy.orm import Session
 
 
@@ -34,23 +37,21 @@ class InterviewService:
             "job_context": job_context,
             "competencies": competencies,
             "conversation_history": [],
-            "current_question": "",
-            "candidate_answer": "",
+            "current_question": None,
+            "candidate_answer": None,
             "claims": [],
             "evidence": [],
-            "reasoning": "",
+            "reasoning": {},
             "confidence": 0.0,
             "evidence_sufficient": False,
             "follow_up_count": 0,
             "max_follow_ups": 2,
             "current_competency_index": 0,
             "next_action": "generate_question",
-            "completed": False,
+            "interview_complete": False,
         }
 
-        result = await interview_graph.ainvoke(
-            state
-        )
+        result = await interview_start_graph.ainvoke(state)
 
         return result
 
@@ -63,9 +64,7 @@ class InterviewService:
 
         state["candidate_answer"] = answer
 
-        state["next_action"] = "record_answer"
-
-        result = await interview_graph.ainvoke(
+        result = await interview_answer_graph.ainvoke(
             state
         )
 
