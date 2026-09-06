@@ -74,6 +74,11 @@ class Settings(BaseSettings):
     RAG_CHUNK_SIZE: int = 1000
     RAG_CHUNK_OVERLAP: int = 200
 
+    # Agora
+    AGORA_APP_ID: str | None = None
+    AGORA_APP_CERTIFICATE: str | None = None
+    AGORA_TOKEN_EXPIRE_SECONDS: int = 3600
+
     @field_validator("CORS_ORIGINS", mode="before")
     @classmethod
     def parse_cors_origins(cls, value: object) -> object:

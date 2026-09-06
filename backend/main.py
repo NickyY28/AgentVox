@@ -4,6 +4,7 @@ from core.config import settings
 from core.constants import HEALTH_PATH
 from core.database import Base, engine
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 
 def create_app() -> FastAPI:
@@ -13,6 +14,13 @@ def create_app() -> FastAPI:
         description=("AgentVox backend API"),
         version="0.1.0",
         debug=settings.DEBUG,
+    )
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=settings.CORS_ORIGINS,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
     )
 
     Base.metadata.create_all(bind=engine)
